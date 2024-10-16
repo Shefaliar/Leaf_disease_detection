@@ -89,10 +89,10 @@ spotipy==2.19.0
 streamlit
 streamlit-webrtc==0.44.7
 tenacity==8.2.2
-tensorboard==2.10.1
+tensorboard
 tensorboard-data-server==0.6.1
 tensorboard-plugin-wit==1.8.1
-tensorflow==2.10.0
+tensorflow
 tensorflow-estimator==2.10.0
 tensorflow-intel==2.11.0
 tensorflow-io-gcs-filesystem==0.31.0
