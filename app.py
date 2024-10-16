@@ -1,6 +1,7 @@
-
-import streamlit as st
 import os
+os.system('pip install opencv-python-headless')
+import streamlit as st
+
 import cv2
 import numpy as np
 from tensorflow.keras.models import load_model
