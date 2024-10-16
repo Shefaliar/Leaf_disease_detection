@@ -1,4 +1,4 @@
-git init
+
 import streamlit as st
 import os
 import cv2
