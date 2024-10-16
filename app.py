@@ -1,7 +1,6 @@
 import os
 os.system('pip install opencv-python-headless')
 import streamlit as st
-
 import cv2
 import numpy as np
 from tensorflow.keras.models import load_model
@@ -15,8 +14,14 @@ segmentation_model_path = 'segmentation_model.h5'
 model = load_model(model_path)
 segmentation_model = load_model(segmentation_model_path)
 
+# Create uploads directory if it doesn't exist
+uploads_dir = "uploads"
+if not os.path.exists(uploads_dir):
+    os.makedirs(uploads_dir)
+
 # Class names
 class_names = ['Healthy_Leaf', 'Healthy_Nut', 'Healthy_Trunk', 'Mahali_Koleroga', 'Stem_bleeding', 'black_pepper_healthy', 'black_pepper_leaf_blight', 'black_pepper_yellow_mottle_virus', 'bud borer', 'healthy_foot', 'leaf spot disease', 'stem cracking', 'yellow leaf disease']
+
 # Function to preprocess and classify the image
 def preprocess_image(img_path):
     img = cv2.imread(img_path)
@@ -53,6 +58,9 @@ def segment_and_calculate_severity(img_path):
     st.write(f"Severity: {severity:.2f}%")          # For debugging
     st.write(f"Adjusted Severity: {adjusted_severity:.2f}%")  # For debugging
     return mask, adjusted_severity
+
+# ... (the rest of your code remains unchanged)
+
 
 disease_guidelines = {
     "yellow leaf disease": {
