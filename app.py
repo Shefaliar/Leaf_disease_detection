@@ -1,6 +1,5 @@
-import os
-os.system('pip install opencv-python-headless')
 import streamlit as st
+import os
 import cv2
 import numpy as np
 from tensorflow.keras.models import load_model
@@ -14,15 +13,48 @@ segmentation_model_path = 'segmentation_model.h5'
 model = load_model(model_path)
 segmentation_model = load_model(segmentation_model_path)
 
-# Create uploads directory if it doesn't exist
-uploads_dir = "uploads"
-if not os.path.exists(uploads_dir):
-    os.makedirs(uploads_dir)
-
 # Class names
 class_names = ['Healthy_Leaf', 'Healthy_Nut', 'Healthy_Trunk', 'Mahali_Koleroga', 'Stem_bleeding', 'black_pepper_healthy', 'black_pepper_leaf_blight', 'black_pepper_yellow_mottle_virus', 'bud borer', 'healthy_foot', 'leaf spot disease', 'stem cracking', 'yellow leaf disease']
-
 # Function to preprocess and classify the image
+# Style the app with custom CSS
+st.markdown("""
+<style>
+body {
+    background-color: #ffffff;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    color: #333333;
+}
+
+h1, h2 {
+    color: #0056b3;
+}
+
+.stButton > button {
+    background-color: #0072B1;
+    color: white;
+}
+
+.stButton > button:hover {
+    background-color: #0056b3;
+}
+
+img {
+    border: 2px solid #0056b3;
+    border-radius: 8px;
+}
+
+.section {
+    margin: 20px 0;
+}
+
+.guidelines {
+    background-color: #e7f3fe;
+    border-left: 6px solid #2196F3;
+    padding: 10px;
+    color: #333333;
+}
+</style>
+""", unsafe_allow_html=True)
 def preprocess_image(img_path):
     img = cv2.imread(img_path)
     if img is None:
@@ -58,9 +90,6 @@ def segment_and_calculate_severity(img_path):
     st.write(f"Severity: {severity:.2f}%")          # For debugging
     st.write(f"Adjusted Severity: {adjusted_severity:.2f}%")  # For debugging
     return mask, adjusted_severity
-
-# ... (the rest of your code remains unchanged)
-
 
 disease_guidelines = {
     "yellow leaf disease": {
@@ -147,51 +176,51 @@ disease_guidelines = {
 }
 
 # Streamlit UI
-# Streamlit UI
-st.title("Leaf Disease Classification and Severity Detection")
+st.title("🌱 Leaf Disease Detection & Severity Analysis")
+st.subheader("Upload an image of a leaf to classify and analyze its condition.")
 
+# File uploader
 uploaded_file = st.file_uploader("Upload a leaf image", type=["jpg", "png", "jpeg"])
 
 if uploaded_file is not None:
+    # Save and display the uploaded image
     file_path = os.path.join("uploads", uploaded_file.name)
     with open(file_path, "wb") as f:
         f.write(uploaded_file.getbuffer())
 
-    # Display the uploaded image
-    st.image(file_path, caption='Uploaded Image', use_column_width=True)
-
+    # Display the uploaded image and classification results
+    st.image(file_path, caption='Uploaded Leaf Image', use_column_width=True)
     result = classify_image(file_path)
-    st.write(f"The leaf is classified as: {result}")
+    st.write(f"**Predicted Disease**: {result}")
 
+    # Assess disease severity for known cases
     if result in ["leaf spot disease", "yellow leaf disease", "black_pepper_yellow_mottle_virus", "black_pepper_leaf_blight"]:
         mask, severity = segment_and_calculate_severity(file_path)
-        st.write(f"Severity of the disease is: {severity:.2f}%")
-        
+        st.write(f"**Severity of the disease**: {severity:.2f}%")
+
         if severity < 5:
             severity_level = "low_severity"
         elif severity < 20:
             severity_level = "mid_severity"
         else:
             severity_level = "high_severity"
-        
-        st.write(f"Severity Level: {severity_level.replace('_', ' ').title()}")
-        
-        if result in disease_guidelines:
-            if severity_level in disease_guidelines[result]["guidelines"]:
-                guidelines = disease_guidelines[result]["guidelines"][severity_level]
-                
+
+        st.write(f"**Severity Level**: {severity_level.replace('_', ' ').title()}")
+
+        if result in disease_guidelines and severity_level in disease_guidelines[result]["guidelines"]:
+            guidelines = disease_guidelines[result]["guidelines"][severity_level]
+            st.markdown("### Recommended Guidelines:")
+            guideline_container = st.container()
+            with guideline_container:
                 for key, value in guidelines.items():
                     if isinstance(value, list):
-                        st.write(f"**{key.replace('_', ' ').title()}**:")
+                        st.markdown(f"**{key.replace('_', ' ').title()}**:")
                         for item in value:
                             st.write(f" - {item}")
                     else:
                         st.write(f"**{key.replace('_', ' ').title()}**: {value}")
-            else:
-                st.write("Severity level not found in the guidelines.")
-        else:
-            st.write("Disease not recognized in the guideline list.")
-        
-        st.image(mask * 255, caption='Segmented Mask', use_column_width=True)
+
+        # Display segmented mask
+        st.image(mask * 255, caption='Segmented Mask', use_column_width=True, clamp=True)
     else:
-        st.write("Disease not recognized in the guideline list.")
+        st.warning("Disease not recognized in the guideline list. Please try another image.")
