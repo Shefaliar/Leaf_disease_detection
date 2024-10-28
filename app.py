@@ -310,4 +310,4 @@ if result in control_measures:
     # Display control measures as bullet points
     st.markdown(f"### <span style='color: black; font-weight: bold;'>Control Measures:</span>", unsafe_allow_html=True)
     for measure in control_measures[result].get(severity_level, ["No specific control measures available."]):
-        st.markdown(f"###<span style='color: black;'>- {measure}", unsafe_allow_html=True)
+        st.markdown(f"### <span style='color: black;'>- {measure}", unsafe_allow_html=True)
