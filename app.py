@@ -193,7 +193,7 @@ def segment_and_calculate_severity(img_path):
     affected_pixels = np.sum(mask)
     total_pixels = mask.size
     severity = (affected_pixels / total_pixels) * 100
-    adjusted_severity = min(severity * 2.5, 100)
+    adjusted_severity = min(severity * 3, 100)
     return mask, adjusted_severity
 
 
