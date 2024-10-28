@@ -223,19 +223,24 @@ control_measures = {
             "Regular application of fertilizer at the rate of 100g N, 40g P₂O₅, and 140g K₂O per palm per year.",
             "Additional superphosphate application (1 kg/palm) alone or with lime (1 kg/palm).",
             "Irrigation every four days during summer months.",
+            "Clean tools and equipment before moving between fields to avoid contamination.",
+            "Avoid using planting materials like seeds etc from the contaminated area"
             
         ],
         "medium": [
             "Manuring with green leaf and compost at 12 kg per palm.",
             "Soil application of Blue Copper 50 + Thimet 10 G (100 g each/palm).",
+             "Avoid using planting materials like seeds etc from the contaminated area"
             
         ],
         "high": [
             
-            "Removal of diseased plants to prevent the spread of disease."
+            "Removal of diseased plants to prevent the spread of disease.",
             "Replant with the Mangala variety of palm, known to be less susceptible to Yellow Leaf Disease.",
             "Use planting material from plants that have shown resistancein the future to the disease to increase disease tolerance",
-            "Source seed materials from disease-free areas to reduce the risk of future infections."
+            "Source seed materials from disease-free areas to reduce the risk of future infections.",
+             "Avoid using planting materials like seeds etc from the contaminated area",
+            "Clean tools and equipment before moving between fields to avoid contamination."
             
         ]
     },
@@ -255,24 +260,31 @@ control_measures = {
         ],
         "high": [
             "Phytosanitation: Implement community-level removal and burning of severely infected plant parts across affected areas.",
-            "Conduct community-level spraying with Propiconazole, Tebuconazole, or Hexaconazole, followed by Propineb as described above."
-            "Avoid moving planting materials from diseased areas to prevent further spread."
-            "Community Approach: Adopt a community-level spraying initiative for effective disease management.",
+            "Conduct community-level spraying with Propiconazole, Tebuconazole, or Hexaconazole, followed by Propineb as described above.",
+            "Avoid moving planting materials from diseased areas to prevent further spread.",
+            "Community Approach: Adopt a community-level spraying initiative for effective disease management.",,
 
         ]
     },
     "black_pepper_yellow_mottle_virus": {
         "low": [
             "Isolate infected plants to prevent virus spread.",
-            "Remove affected leaves if virus symptoms are mild."
+            "Remove and destroy infected plants and debris to prevent virus spread.",
+            "Clean tools and equipment before moving between fields to avoid contamination.",
+            "Inspect plants regularly for symptoms like yellow mottling or stunted growth, and document findings."
         ],
         "medium": [
             "Remove heavily infected parts to minimize virus spread.",
-            "Monitor nearby plants closely for early symptoms."
+            "Improve soil structure by adding organic matter (like compost) to enhance drainage and microbial activity.",
+            "Apply balanced fertilizers (N-P-K) based on soil test results to strengthen plant health and resilience against infections."
         ],
         "high": [
             "Destroy severely infected plants to protect nearby crops.",
-            "Implement vector control measures to prevent virus spread by insects."
+            "Apply fungicides like propiconazole to prevent secondary fungal infections that can exacerbate plant stress.",
+            "Use certified clean planting material free from the virus during the replanting; consider hot water treatment of seeds to eliminate pathogens.",
+            "Implement vector control measures to prevent virus spread by insects.",
+            "Avoid using planting materials like seeds etc from the contaminated area"
+
         ]
     }
 }
