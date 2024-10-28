@@ -167,7 +167,7 @@ if uploaded_file is not None:
         if severity < 5:
             severity_level = "low"
             severity_style = "severity-low"
-        elif severity < 20:
+        elif severity < 15:
             severity_level = "medium"
             severity_style = "severity-medium"
         else:
