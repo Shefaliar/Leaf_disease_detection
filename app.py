@@ -164,7 +164,7 @@ if uploaded_file is not None:
         mask, severity = segment_and_calculate_severity(file_path)
         
         # Define severity level and styling
-        if severity < 5:
+        if severity < 7:
             severity_level = "low"
             severity_style = "severity-low"
         elif severity < 20:
