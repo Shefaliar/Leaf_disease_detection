@@ -262,7 +262,7 @@ control_measures = {
             "Phytosanitation: Implement community-level removal and burning of severely infected plant parts across affected areas.",
             "Conduct community-level spraying with Propiconazole, Tebuconazole, or Hexaconazole, followed by Propineb as described above.",
             "Avoid moving planting materials from diseased areas to prevent further spread.",
-            "Community Approach: Adopt a community-level spraying initiative for effective disease management.",,
+            "Community Approach: Adopt a community-level spraying initiative for effective disease management."
 
         ]
     },
