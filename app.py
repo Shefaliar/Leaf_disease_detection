@@ -271,7 +271,9 @@ if uploaded_file is not None:
         # Display control measures based on severity level
         st.markdown(f"### <span style='color: black; font-weight: bold;'>Control Measures:</span>", unsafe_allow_html=True)
         for measure in control_measures[result].get(severity_level, ["No specific control measures available."]):
-            st.markdown(f"- {measure}", unsafe_allow_html=True)
+            st.markdown(f"### <span style='color: black;'>- {measure}", unsafe_allow_html=True)
+
+
 
 
 
