@@ -223,6 +223,7 @@ control_measures = {
 }
 
 
+# Make sure to define 'result' only after an image is uploaded and classified
 if uploaded_file is not None:
     # Create 'uploads' directory if it doesn't exist
     os.makedirs("uploads", exist_ok=True)
@@ -252,7 +253,7 @@ if uploaded_file is not None:
         mask, severity = segment_and_calculate_severity(file_path)
         
         # Define severity level and styling
-        if severity < 7:
+        if severity < 5:
             severity_level = "low"
             severity_style = "severity-low"
         elif severity < 20:
@@ -266,35 +267,12 @@ if uploaded_file is not None:
         st.markdown(f"### <span style='color: black;'>Severity of the disease: <span class='{severity_style}'>{severity:.2f}%</span>", unsafe_allow_html=True)
         st.markdown(f"### <span style='color: black;'>Severity Level : <span class='{severity_style}'>{severity_level.capitalize()}</span>", unsafe_allow_html=True)
         st.image(mask * 255, caption='Segmented Mask', use_column_width=True, clamp=True)
-# Display result and manage display names
+
+        # Display control measures based on severity level
+        st.markdown(f"### <span style='color: black; font-weight: bold;'>Control Measures:</span>", unsafe_allow_html=True)
+        for measure in control_measures[result].get(severity_level, ["No specific control measures available."]):
+            st.markdown(f"- {measure}", unsafe_allow_html=True)
 
 
 
 
-
-
-# Control measures dictionary template for all diseases with severity levels
-
-
-# Display control measures as bullet points for each disease based on severity
-if result in control_measures:
-    # Severity calculations and display logic
-    mask, severity = segment_and_calculate_severity(file_path)
-    
-    # Define severity level and styling
-    if severity < 8:
-        severity_level = "low"
-        severity_style = "severity-low"
-    elif severity < 20:
-        severity_level = "medium"
-        severity_style = "severity-medium"
-    else:
-        severity_level = "high"
-        severity_style = "severity-high"
-
-
-    
-    # Display control measures as bullet points
-    st.markdown(f"### <span style='color: black; font-weight: bold;'>Control Measures:</span>", unsafe_allow_html=True)
-    for measure in control_measures[result].get(severity_level, ["No specific control measures available."]):
-        st.markdown(f"### <span style='color: black;'>- {measure}", unsafe_allow_html=True)
