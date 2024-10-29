@@ -132,73 +132,6 @@ def segment_and_calculate_severity(img_path):
     severity = (affected_pixels / total_pixels) * 100
     adjusted_severity = min(severity * 3, 100)
     return mask, adjusted_severity
-
-
-
-if uploaded_file is not None:
-    # Create 'uploads' directory if it doesn't exist
-    os.makedirs("uploads", exist_ok=True)
-    
-    # Save and display the uploaded image
-    file_path = os.path.join("uploads", uploaded_file.name)
-    with open(file_path, "wb") as f:
-        f.write(uploaded_file.getbuffer())
-    st.image(file_path, caption='Uploaded Leaf Image', use_column_width=True)
-
-    # Classify and display result
-    result = classify_image(file_path)
-    display_result = display_names.get(result, result)  # Get the display name from the mapping
-
-    if "Healthy" in display_result:
-        st.markdown(f"### <span style='color: black; font-weight: bold;'>Result: {display_result}</span>", unsafe_allow_html=True)
-    else:
-        st.markdown(f"### <span style='color: black; font-weight: bold;'>Predicted Disease: {display_result}</span>", unsafe_allow_html=True)
-        
-        # Display cause of the disease if it exists in the dictionary
-        if result in disease_causes:
-            cause = disease_causes[result]
-            st.markdown(f"### <span style='color: black;'>Cause of the Disease: <span style='color: black;'>{cause}</span>", unsafe_allow_html=True)
-    
-    # Only show severity analysis and control measures if it’s a disease
-    if result in ["leaf spot disease", "yellow leaf disease", "black_pepper_yellow_mottle_virus", "black_pepper_leaf_blight"]:
-        mask, severity = segment_and_calculate_severity(file_path)
-        
-        # Define severity level and styling
-        if severity < 7:
-            severity_level = "low"
-            severity_style = "severity-low"
-        elif severity < 20:
-            severity_level = "medium"
-            severity_style = "severity-medium"
-        else:
-            severity_level = "high"
-            severity_style = "severity-high"
-
-        # Display severity and severity level in the appropriate color
-        st.markdown(f"### <span style='color: black;'>Severity of the disease: <span class='{severity_style}'>{severity:.2f}%</span>", unsafe_allow_html=True)
-        st.markdown(f"### <span style='color: black;'>Severity Level : <span class='{severity_style}'>{severity_level.capitalize()}</span>", unsafe_allow_html=True)
-        st.image(mask * 255, caption='Segmented Mask', use_column_width=True, clamp=True)
-# Display result and manage display names
-
-
-def segment_and_calculate_severity(img_path):
-    img = cv2.imread(img_path)
-    img_resized = cv2.resize(img, (128, 128))
-    img_resized = img_resized.astype("float32") / 255.0
-    img_resized = np.expand_dims(img_resized, axis=0)
-    mask = segmentation_model.predict(img_resized)
-    mask = (mask > 0.05).astype(np.uint8)
-    mask = np.squeeze(mask)
-    mask = cv2.resize(mask, (img.shape[1], img.shape[0]))
-    affected_pixels = np.sum(mask)
-    total_pixels = mask.size
-    severity = (affected_pixels / total_pixels) * 100
-    adjusted_severity = min(severity * 3.5, 100)
-    return mask, adjusted_severity
-
-
-
-# Control measures dictionary template for all diseases with severity levels
 control_measures = {
     "black_pepper_leaf_blight": {
         "low": [
@@ -288,6 +221,60 @@ control_measures = {
         ]
     }
 }
+
+
+if uploaded_file is not None:
+    # Create 'uploads' directory if it doesn't exist
+    os.makedirs("uploads", exist_ok=True)
+    
+    # Save and display the uploaded image
+    file_path = os.path.join("uploads", uploaded_file.name)
+    with open(file_path, "wb") as f:
+        f.write(uploaded_file.getbuffer())
+    st.image(file_path, caption='Uploaded Leaf Image', use_column_width=True)
+
+    # Classify and display result
+    result = classify_image(file_path)
+    display_result = display_names.get(result, result)  # Get the display name from the mapping
+
+    if "Healthy" in display_result:
+        st.markdown(f"### <span style='color: black; font-weight: bold;'>Result: {display_result}</span>", unsafe_allow_html=True)
+    else:
+        st.markdown(f"### <span style='color: black; font-weight: bold;'>Predicted Disease: {display_result}</span>", unsafe_allow_html=True)
+        
+        # Display cause of the disease if it exists in the dictionary
+        if result in disease_causes:
+            cause = disease_causes[result]
+            st.markdown(f"### <span style='color: black;'>Cause of the Disease: <span style='color: black;'>{cause}</span>", unsafe_allow_html=True)
+    
+    # Only show severity analysis and control measures if it’s a disease
+    if result in ["leaf spot disease", "yellow leaf disease", "black_pepper_yellow_mottle_virus", "black_pepper_leaf_blight"]:
+        mask, severity = segment_and_calculate_severity(file_path)
+        
+        # Define severity level and styling
+        if severity < 7:
+            severity_level = "low"
+            severity_style = "severity-low"
+        elif severity < 20:
+            severity_level = "medium"
+            severity_style = "severity-medium"
+        else:
+            severity_level = "high"
+            severity_style = "severity-high"
+
+        # Display severity and severity level in the appropriate color
+        st.markdown(f"### <span style='color: black;'>Severity of the disease: <span class='{severity_style}'>{severity:.2f}%</span>", unsafe_allow_html=True)
+        st.markdown(f"### <span style='color: black;'>Severity Level : <span class='{severity_style}'>{severity_level.capitalize()}</span>", unsafe_allow_html=True)
+        st.image(mask * 255, caption='Segmented Mask', use_column_width=True, clamp=True)
+# Display result and manage display names
+
+
+
+
+
+
+# Control measures dictionary template for all diseases with severity levels
+
 
 # Display control measures as bullet points for each disease based on severity
 if result in control_measures:
